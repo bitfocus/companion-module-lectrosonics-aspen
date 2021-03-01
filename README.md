@@ -1,0 +1,1 @@
+# companion-module-lectrosonics-aspen
