@@ -1,5 +1,6 @@
 const Skel = require('../../instance_skel')
 const configFields = require('./src/configFields')
+const actions = require('./src/actions')
 const polling = require('./src/polling')
 const tcp = require('./src/tcp')
 
@@ -12,6 +13,7 @@ class AspenInstance extends Skel {
     // Assign the methods from the listed files to this class
     Object.assign(this, {
       ...configFields,
+      ...actions,
       ...tcp,
       ...polling
     })
@@ -19,9 +21,6 @@ class AspenInstance extends Skel {
     this.data = {
       pollingInterval: null
     }
-
-    // Init the TCP connection
-    this.initTCP()
 
     // Init the Actions
     this.actions()
@@ -37,41 +36,14 @@ class AspenInstance extends Skel {
       this.config = config
     }
 
+    // Init the TCP connection
+    this.initTCP()
+
     // this.initFeedbacks();
     // this.updateVariableDefinitions();
     // this.initPolling();
 
     this.status(this.STATUS_OK)
-  }
-
-  actions (system) {
-    this.setActions({
-      rear_panel_mute: {
-        label: 'Real Panel - Toggle Mute',
-        options: [
-          {
-            type: 'number',
-            label: 'Channel',
-            id: 'channel',
-            tooltip: 'Sets the rear panel channel to control',
-            default: 0,
-            required: true,
-            range: false
-          }
-        ]
-      },
-      rear_panel_gain_increment: {
-        label: 'Real Panel - Gain Increment'
-      }
-    })
-  }
-
-  action (action) {
-    try {
-      this.log('info', action.action)
-    } catch (err) {
-      this.log('error', err.message)
-    }
   }
 
   destroy () {
