@@ -78,8 +78,9 @@ module.exports = {
           .substring(1, value.length - 1)
           .split(',')
 
-        for (let ch = 1; ch <= values.length; ch++) {
-          this.processVariable(command, ch, values[ch])
+        // First channel is 1, first value in array is 0...
+        for (let i = 0; i < values.length; i++) {
+          this.processVariable(command, i + 1, values[i])
         }
       }
 

@@ -4,6 +4,7 @@ const actions = require('./src/actions')
 const polling = require('./src/polling')
 const tcp = require('./src/tcp')
 const variables = require('./src/variables')
+const presets = require('./src/presets')
 
 class AspenInstance extends Skel {
   constructor (system, id, config) {
@@ -16,7 +17,8 @@ class AspenInstance extends Skel {
       ...actions,
       ...tcp,
       ...polling,
-      ...variables
+      ...variables,
+      ...presets
     })
 
     // Internal variables
@@ -26,13 +28,14 @@ class AspenInstance extends Skel {
       outputChannels: null,
       pollingInterval: null
     }
-
-    // Init the Actions
-    this.actions()
   }
 
   init () {
     this.status(this.STATUS_UNKNOWN)
+
+    // Init the Actions
+    this.actions()
+
     this.updateConfig()
   }
 
@@ -52,6 +55,9 @@ class AspenInstance extends Skel {
 
       // Update Variable Definitions
       this.updateVariableDefinitions()
+
+      // Init the presets
+      this.presets()
 
       // Init the TCP connection
       this.initTCP()

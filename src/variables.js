@@ -58,8 +58,6 @@ module.exports = {
    * @param {string} value The updated value of the variable
    */
   processVariable (command, channel, value) {
-    console.log('Processing Variable')
-
     switch (command) {
       case 'ingn':
         // Send Input Gain Query

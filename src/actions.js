@@ -3,8 +3,8 @@ const inputChannel = {
   label: 'Input Channel',
   id: 'channel',
   tooltip: 'Enter the Input Channel',
-  default: 0,
-  min: 0,
+  default: 1,
+  min: 1,
   max: 105,
   required: true,
   range: false
@@ -15,8 +15,8 @@ const outputChannel = {
   label: 'Output Channel',
   id: 'channel',
   tooltip: 'Enter the Output Channel',
-  default: 0,
-  min: 0,
+  default: 1,
+  min: 1,
   max: 105,
   required: true,
   range: false
