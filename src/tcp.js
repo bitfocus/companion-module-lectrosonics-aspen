@@ -55,6 +55,9 @@ module.exports = {
   /**
    * Parses and processes the response from the device and updates variables
    *
+   * Example message: OK ingn(3)=45
+   * Example message: OK inmt(*)={1,1,0,1,1,0,1,0,1,1,0,0,0,0,0,1,0,0,0,0}
+   *
    * @param {string} message The return message from the device
    */
   processData (message) {
