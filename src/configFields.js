@@ -25,6 +25,19 @@ module.exports = {
         regex: this.REGEX_PORT
       },
       {
+        type: 'dropdown',
+        label: 'Device Type',
+        id: 'device_type',
+        width: 12,
+        default: 'SPN1612',
+        choices: [
+          { id: 'SPN812', label: 'SPN812' },
+          { id: 'SPN1612', label: 'SPN1612' },
+          { id: 'SPN1624', label: 'SPN1624' },
+          { id: 'SPN2412', label: 'SPN2412' }
+        ]
+      },
+      {
         type: 'text',
         id: 'info',
         width: 12,
@@ -33,10 +46,26 @@ module.exports = {
       },
       {
         type: 'checkbox',
-        id: 'enablePolling',
+        id: 'enable_polling',
         label: 'Enable Polling?',
         width: 6,
         default: true
+      },
+      {
+        type: 'dropdown',
+        label: 'Polling Rate',
+        id: 'polling_rate',
+        width: 6,
+        default: 750,
+        choices: [
+          { id: 200, label: '200ms' },
+          { id: 300, label: '300ms' },
+          { id: 500, label: '500ms' },
+          { id: 750, label: '750ms' },
+          { id: 1000, label: '1000ms' },
+          { id: 2500, label: '2500ms' },
+          { id: 5000, label: '5000ms' }
+        ]
       }
     ]
   }

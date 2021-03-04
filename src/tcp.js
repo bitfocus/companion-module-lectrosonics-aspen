@@ -27,34 +27,63 @@ module.exports = {
 
       this.socket.on('data', data => {
         buffer += data.toString()
-
         if (buffer.endsWith('\r\n')) {
-          this.debug('Data', buffer)
-          // let xmlBuffer = '';
-
-          // buffer.split('\r\n')
-          //   .filter(message => message != '')
-          //   .forEach(message => {
-          //     // Check if fragment is XML data
-          //     if (message.startsWith('<vmix>') || xmlBuffer.length > 0) {
-          //       xmlBuffer += message;
-          //       if (xmlBuffer.includes('<vmix>') && xmlBuffer.includes('</vmix>')) {
-          //         processMessages(xmlBuffer);
-          //         xmlBuffer = '';
-          //       }
-          //     } else {
-          //       processMessages(message);
-          //     }
-          //   });
-
+          buffer
+            .split('\r\n')
+            .filter(message => message !== '')
+            .forEach(message => this.processData(message.trim()))
           buffer = ''
         }
       })
     }
   },
 
-  sendTCP (payload) {
-    this.log('debug', `Sending ${payload} to ${this.socket.host}...`)
+  /**
+   * Sends a TCP Package
+   *
+   * @param {string} payload The actual payload string for the connected device
+   * @param {bool} log When false, skip logging. (To prevent flooding logs by polling)
+   */
+  sendTCP (payload, log = true) {
+    if (log) {
+      this.log('debug', `Sending ${payload} to ${this.socket.host}...`)
+    }
+
     this.socket.send(payload)
+  },
+
+  /**
+   * Parses and processes the response from the device and updates variables
+   *
+   * @param {string} message The return message from the device
+   */
+  processData (message) {
+    const [, status, command, channel, value] = /(OK|ERROR)(?: (.*)\((.*)\)=(.*))?/.exec(message)
+
+    if (status === 'ERROR') {
+      this.status(this.STATUS_ERROR)
+      this.log('warning', `ERROR received in TCP stream from ${this.socket.host}...`)
+      return
+    }
+
+    if (status === 'OK') {
+      this.status(this.STATUS_OK)
+
+      // If return output is about multiple channels, process as array
+      if (channel === '*') {
+        const values = value
+          .substring(1, value.length - 1)
+          .split(',')
+
+        for (let ch = 1; ch <= values.length; ch++) {
+          this.processVariable(command, ch, values[ch])
+        }
+      }
+
+      // If return output is about a single channel, process as single
+      if (Number(channel)) {
+        this.processVariable(command, Number(channel), value)
+      }
+    }
   }
 }

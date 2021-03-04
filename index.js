@@ -3,11 +3,11 @@ const configFields = require('./src/configFields')
 const actions = require('./src/actions')
 const polling = require('./src/polling')
 const tcp = require('./src/tcp')
+const variables = require('./src/variables')
 
 class AspenInstance extends Skel {
   constructor (system, id, config) {
     super(system, id, config)
-
     this.config = config
 
     // Assign the methods from the listed files to this class
@@ -15,10 +15,15 @@ class AspenInstance extends Skel {
       ...configFields,
       ...actions,
       ...tcp,
-      ...polling
+      ...polling,
+      ...variables
     })
 
+    // Internal variables
     this.data = {
+      deviceModel: null,
+      inputChannels: null,
+      outputChannels: null,
       pollingInterval: null
     }
 
@@ -36,14 +41,28 @@ class AspenInstance extends Skel {
       this.config = config
     }
 
-    // Init the TCP connection
-    this.initTCP()
+    // Quickly check if certain config values are present and continue setup
+    if (this.config.host && this.config.device_type) {
+      // Extract channelcount from Aspen model
+      const modelSpecs = /SPN(8|16|24)(12|24)/.exec(this.config.device_type)
 
-    // this.initFeedbacks();
-    // this.updateVariableDefinitions();
-    // this.initPolling();
+      this.data.deviceModel = modelSpecs[0]
+      this.data.inputChannels = Number(modelSpecs[1])
+      this.data.outputChannels = Number(modelSpecs[2])
 
-    this.status(this.STATUS_OK)
+      // Update Variable Definitions
+      this.updateVariableDefinitions()
+
+      // Init the TCP connection
+      this.initTCP()
+
+      // Start polling for settingvalues
+      this.initPolling()
+
+      // this.initFeedbacks();
+
+      this.status(this.STATUS_OK)
+    }
   }
 
   destroy () {
