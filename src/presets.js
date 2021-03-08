@@ -9,8 +9,8 @@ module.exports = {
         label: `input_mute_${index}`,
         bank: {
           style: 'text',
-          text: `Mute Input ${index}\n$(ASPEN:${mute.variable.name})`,
-          size: '18',
+          text: `Input ${index}\\nMute $(ASPEN:${mute.variable.name})`,
+          size: '14',
           color: this.rgb(255, 255, 255),
           bgcolor: this.rgb(0, 0, 0)
         },
@@ -38,8 +38,8 @@ module.exports = {
         label: `output_mute_${index}`,
         bank: {
           style: 'text',
-          text: `Mute Output ${index}\n$(ASPEN:${mute.variable.name})`,
-          size: '18',
+          text: `Output ${index}\\nMute $(ASPEN:${mute.variable.name})`,
+          size: '14',
           color: this.rgb(255, 255, 255),
           bgcolor: this.rgb(0, 0, 0)
         },

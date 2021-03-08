@@ -128,12 +128,18 @@ module.exports = {
           break
         case 'input_mute_toggle':
           this.sendTCP(`!inmttog(${options.channel})\n`)
+
+          // Update mute state directly
+          this.setState('inmt', options.channel, this.state.audioInputs[options.channel].mute.currentValue === '0' ? '1' : '0')
           break
         case 'output_gain':
           this.sendTCP(`!outgn(${options.channel})=${options.gain}\n`)
           break
         case 'output_mute_toggle':
           this.sendTCP(`!outmttog(${options.channel})\n`)
+
+          // Update mute state directly
+          this.setState('outmt', options.channel, this.state.audioOutputs[options.channel].mute.currentValue === '0' ? '1' : '0')
           break
         case 'rear_panel_input_gain':
           this.sendTCP(`!rpingn(${options.channel})=${options.gain}\n`)

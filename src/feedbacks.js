@@ -54,7 +54,7 @@ module.exports = {
   },
 
   feedback ({ type, options }) {
-    let status = 'OFF'
+    let status = '0'
 
     switch (type) {
       case 'input_mute':
@@ -65,7 +65,7 @@ module.exports = {
         break
     }
 
-    if (status === 'ON') {
+    if (status === '1') {
       return { color: options.fg, bgcolor: options.bg }
     }
 

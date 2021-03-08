@@ -32,12 +32,7 @@ class AspenInstance extends InstanceSkel {
     }
 
     // Internal device state
-    this.state = {
-      audioInputs: [],
-      audioOutputs: [],
-      rearInputs: [],
-      rearOutputs: []
-    }
+    this.state = {}
   }
 
   init () {
@@ -65,7 +60,9 @@ class AspenInstance extends InstanceSkel {
       this.data.outputChannels = Number(modelSpecs[2])
 
       // Update the channels and variables based on the selected model.
-      this.updateChannelConfiguration()
+      this.channelConfiguration()
+
+      this.updateVariableDefinitions()
 
       // Init the presets
       this.presets()

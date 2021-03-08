@@ -3,7 +3,12 @@ module.exports = {
    * Creates the channel configuration
    */
   channelConfiguration () {
-    this.state = {}
+    this.state = {
+      audioInputs: [],
+      audioOutputs: [],
+      rearInputs: [],
+      rearOutputs: []
+    }
 
     for (let i = 1; i <= this.data.inputChannels; i++) {
       // Add Audio Input
@@ -69,44 +74,6 @@ module.exports = {
   },
 
   /**
-   * Processes and updates a device state and it's variable.
-   *
-   * @param {string} command The command that corresponds with the function
-   * @param {string} channel The channel that needs to update
-   * @param {string} value The updated value of the variable
-   */
-  setState (command, channel, value) {
-    switch (command) {
-      case 'ingn': // Input Gain
-        this.state.audioInputs[channel].gain.currentValue = value
-        this.setVariable(this.state.audioInputs[channel].gain.variable.name, value)
-        break
-      case 'inmt': // Input Mute
-        this.state.audioInputs[channel].mute.currentValue = value
-        this.setVariable(this.state.audioInputs[channel].mute.variable.name, value === '1' ? 'ON' : 'OFF')
-        this.checkFeedbacks('input_mute')
-        break
-      case 'outgn': // Output Gain
-        this.state.audioOutputs[channel].gain.currentValue = value
-        this.setVariable(this.state.audioOutputs[channel].gain.variable.name, value)
-        break
-      case 'outmt': // Output Mute
-        this.state.audioOutput[channel].mute.currentValue = value
-        this.setVariable(this.state.audioOutput[channel].mute.variable.name, value === '1' ? 'ON' : 'OFF')
-        this.checkFeedbacks('output_mute')
-        break
-      case 'rpingn': // Rear Panel Input Gain
-        this.state.rearInputs[channel].gain.currentValue = value
-        this.setVariable(this.state.rearInputs[channel].gain.variable.name, value)
-        break
-      case 'rpoutgn': // Rear Panel Output Gain
-        this.state.rearOutputs[channel].gain.currentValue = value
-        this.setVariable(this.state.rearOutputs[channel].gain.variable.name, value)
-        break
-    }
-  },
-
-  /**
    * Updates the variable definitions.
    */
   updateVariableDefinitions () {
@@ -135,5 +102,68 @@ module.exports = {
     })
 
     this.setVariableDefinitions(variables)
+  },
+
+  /**
+   * Processes and updates a device state and it's variable.
+   *
+   * @param {string} command The command that corresponds with the function
+   * @param {string} channel The channel that needs to update
+   * @param {string} value The updated value of the variable
+   */
+  setState (command, channel, value) {
+    let stateChannel
+
+    switch (command) {
+      case 'ingn': // Input Gain
+        stateChannel = this.state.audioInputs[channel]
+        if (stateChannel.gain.currentValue !== value) {
+          stateChannel.gain.currentValue = value
+          this.setVariable(stateChannel.gain.variable.name, value)
+        }
+        break
+
+      case 'inmt': // Input Mute
+        stateChannel = this.state.audioInputs[channel]
+        if (stateChannel.mute.currentValue !== value) {
+          stateChannel.mute.currentValue = value
+          this.setVariable(stateChannel.mute.variable.name, value === '1' ? 'ON' : 'OFF')
+          this.checkFeedbacks('input_mute')
+        }
+        break
+
+      case 'outgn': // Output Gain
+        stateChannel = this.state.audioOutputs[channel]
+        if (stateChannel.gain.currentValue !== value) {
+          this.state.audioOutputs[channel].gain.currentValue = value
+          this.setVariable(this.state.audioOutputs[channel].gain.variable.name, value)
+        }
+        break
+
+      case 'outmt': // Output Mute
+        stateChannel = this.state.audioOutputs[channel]
+        if (stateChannel.mute.currentValue !== value) {
+          this.state.audioOutput[channel].mute.currentValue = value
+          this.setVariable(this.state.audioOutput[channel].mute.variable.name, value === '1' ? 'ON' : 'OFF')
+          this.checkFeedbacks('output_mute')
+        }
+        break
+
+      case 'rpingn': // Rear Panel Input Gain
+        stateChannel = this.state.rearInputs[channel]
+        if (stateChannel.gain.currentValue !== value) {
+          this.state.rearInputs[channel].gain.currentValue = value
+          this.setVariable(this.state.rearInputs[channel].gain.variable.name, value)
+        }
+        break
+
+      case 'rpoutgn': // Rear Panel Output Gain
+        stateChannel = this.state.rearOutputs[channel]
+        if (stateChannel.gain.currentValue !== value) {
+          this.state.rearOutputs[channel].gain.currentValue = value
+          this.setVariable(this.state.rearOutputs[channel].gain.variable.name, value)
+        }
+        break
+    }
   }
 }
