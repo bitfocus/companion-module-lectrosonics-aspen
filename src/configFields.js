@@ -29,7 +29,7 @@ module.exports = {
         label: 'Device Type',
         id: 'device_type',
         width: 12,
-        default: 'SPN1612',
+        default: 'SPN812',
         choices: [
           { id: 'SPN812', label: 'SPN812' },
           { id: 'SPN1612', label: 'SPN1612' },
@@ -56,7 +56,7 @@ module.exports = {
         label: 'Polling Rate',
         id: 'polling_rate',
         width: 6,
-        default: 750,
+        default: 1000,
         choices: [
           { id: 200, label: '200ms' },
           { id: 300, label: '300ms' },

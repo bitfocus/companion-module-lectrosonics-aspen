@@ -1,12 +1,13 @@
-const Skel = require('../../instance_skel')
+const InstanceSkel = require('../../instance_skel')
 const configFields = require('./src/configFields')
-const actions = require('./src/actions')
-const polling = require('./src/polling')
+const channelConfig = require('./src/channelConfig')
 const tcp = require('./src/tcp')
-const variables = require('./src/variables')
+const polling = require('./src/polling')
+const actions = require('./src/actions')
 const presets = require('./src/presets')
+const feedbacks = require('./src/feedbacks')
 
-class AspenInstance extends Skel {
+class AspenInstance extends InstanceSkel {
   constructor (system, id, config) {
     super(system, id, config)
     this.config = config
@@ -14,11 +15,12 @@ class AspenInstance extends Skel {
     // Assign the methods from the listed files to this class
     Object.assign(this, {
       ...configFields,
-      ...actions,
+      ...channelConfig,
       ...tcp,
       ...polling,
-      ...variables,
-      ...presets
+      ...actions,
+      ...presets,
+      ...feedbacks
     })
 
     // Internal variables
@@ -28,14 +30,23 @@ class AspenInstance extends Skel {
       outputChannels: null,
       pollingInterval: null
     }
+
+    // Internal device state
+    this.state = {
+      audioInputs: [],
+      audioOutputs: [],
+      rearInputs: [],
+      rearOutputs: []
+    }
   }
 
   init () {
     this.status(this.STATUS_UNKNOWN)
 
-    // Init the Actions
+    // Init the actions
     this.actions()
 
+    // Update the config
     this.updateConfig()
   }
 
@@ -53,8 +64,8 @@ class AspenInstance extends Skel {
       this.data.inputChannels = Number(modelSpecs[1])
       this.data.outputChannels = Number(modelSpecs[2])
 
-      // Update Variable Definitions
-      this.updateVariableDefinitions()
+      // Update the channels and variables based on the selected model.
+      this.updateChannelConfiguration()
 
       // Init the presets
       this.presets()
@@ -65,8 +76,10 @@ class AspenInstance extends Skel {
       // Start polling for settingvalues
       this.initPolling()
 
-      // this.initFeedbacks();
+      // Init the feedbacks
+      this.feedbacks()
 
+      // Set status to OK
       this.status(this.STATUS_OK)
     }
   }

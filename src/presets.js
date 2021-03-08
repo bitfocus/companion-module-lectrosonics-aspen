@@ -3,13 +3,13 @@ module.exports = {
     const presets = []
 
     // Add Input Mute Presets
-    for (let i = 1; i <= this.data.inputChannels; i++) {
+    this.state.audioInputs.forEach(({ mute }, index) => {
       presets.push({
         category: 'Audio Input',
-        label: `input_mute_${i}`,
+        label: `input_mute_${index}`,
         bank: {
           style: 'text',
-          text: `Mute Input ${i}`,
+          text: `Mute Input ${index}\n$(ASPEN:${mute.variable.name})`,
           size: '18',
           color: this.rgb(255, 255, 255),
           bgcolor: this.rgb(0, 0, 0)
@@ -17,11 +17,48 @@ module.exports = {
         actions: [{
           action: 'input_mute_toggle',
           options: {
-            channel: i
+            channel: index
+          }
+        }],
+        feedbacks: [{
+          type: 'input_mute',
+          options: {
+            bg: this.rgb(255, 65, 54),
+            fg: this.rgb(0, 0, 0),
+            channel: index
           }
         }]
       })
-    }
+    })
+
+    // Add Output Mute Presets
+    this.state.audioOutputs.forEach(({ mute }, index) => {
+      presets.push({
+        category: 'Audio Output',
+        label: `output_mute_${index}`,
+        bank: {
+          style: 'text',
+          text: `Mute Output ${index}\n$(ASPEN:${mute.variable.name})`,
+          size: '18',
+          color: this.rgb(255, 255, 255),
+          bgcolor: this.rgb(0, 0, 0)
+        },
+        actions: [{
+          action: 'output_mute_toggle',
+          options: {
+            channel: index
+          }
+        }],
+        feedbacks: [{
+          type: 'output_mute',
+          options: {
+            bg: this.rgb(255, 65, 54),
+            fg: this.rgb(0, 0, 0),
+            channel: index
+          }
+        }]
+      })
+    })
 
     this.setPresetDefinitions(presets)
   }

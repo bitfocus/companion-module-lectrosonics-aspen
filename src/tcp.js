@@ -80,13 +80,13 @@ module.exports = {
 
         // First channel is 1, first value in array is 0...
         for (let i = 0; i < values.length; i++) {
-          this.processVariable(command, i + 1, values[i])
+          this.setState(command, i + 1, values[i])
         }
       }
 
       // If return output is about a single channel, process as single
       if (Number(channel)) {
-        this.processVariable(command, Number(channel), value)
+        this.setState(command, Number(channel), value)
       }
     }
   }
