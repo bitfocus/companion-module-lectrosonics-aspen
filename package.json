@@ -1,0 +1,26 @@
+{
+  "name": "lectrosonics-aspen",
+  "version": "1.0.0",
+  "api_version": "1.0.0",
+  "description": "Aspen Audio Processor plugin for Companion",
+  "keywords": [
+    "Aspen",
+    "Audio",
+    "Processor"
+  ],
+  "manufacturer": "Lectrosonics",
+  "product": "ASPEN",
+  "shortname": "ASPEN",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky install",
+    "test": "standard",
+    "lint": "standard --fix"
+  },
+  "author": "Bert Bredewold <bbredewold@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "husky": "^5.1.2",
+    "standard": "^16.0.3"
+  }
+}
