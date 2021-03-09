@@ -20,7 +20,7 @@
   "author": "Bert Bredewold <bbredewold@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "husky": "^5.1.2",
+    "husky": "^5.1.3",
     "standard": "^16.0.3"
   }
 }

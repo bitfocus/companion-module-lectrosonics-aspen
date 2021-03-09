@@ -56,12 +56,13 @@ class AspenInstance extends InstanceSkel {
       const modelSpecs = /SPN(8|16|24)(12|24)/.exec(this.config.device_type)
 
       this.data.deviceModel = modelSpecs[0]
-      this.data.inputChannels = Number(modelSpecs[1])
+      this.data.inputChannels = Number(modelSpecs[1]) + 4 // 4 channels for testsignals
       this.data.outputChannels = Number(modelSpecs[2])
 
       // Update the channels and variables based on the selected model.
       this.channelConfiguration()
 
+      // Update Variables
       this.updateVariableDefinitions()
 
       // Init the presets
