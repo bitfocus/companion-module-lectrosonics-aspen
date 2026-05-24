@@ -1,0 +1,39 @@
+{
+  "$schema": "../node_modules/@companion-module/base/assets/manifest.schema.json",
+  "type": "connection",
+  "id": "lectrosonics-aspen",
+  "name": "lectrosonics-aspen",
+  "shortname": "ASPEN",
+  "description": "Controls the Lectrosonics ASPEN series audio processors",
+  "version": "0.0.0",
+  "license": "MIT",
+  "repository": "git+https://github.com/bitfocus/companion-module-lectrosonics-aspen.git",
+  "bugs": "https://github.com/bitfocus/companion-module-lectrosonics-aspen/issues",
+  "maintainers": [
+    {
+      "name": "Bert Bredewold",
+      "email": "bbredewold@gmail.com"
+    },
+    {
+      "name": "Maurits de Jong",
+      "email": "dejong.maurits@gmail.com"
+    }
+  ],
+  "runtime": {
+    "type": "node22",
+    "api": "nodejs-ipc",
+    "apiVersion": "0.0.0",
+    "entrypoint": "../src/main.js"
+  },
+  "legacyIds": [],
+  "manufacturer": "Lectrosonics",
+  "products": [
+    "ASPEN"
+  ],
+  "keywords": [
+    "audio",
+    "processor",
+    "mixer",
+    "dsp"
+  ]
+}
